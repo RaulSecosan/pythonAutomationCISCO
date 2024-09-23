@@ -12,8 +12,8 @@ def configure_ipv4(ssh_manager, ip_addresses):
         # Asignează IP-ul pe interfață
         commands = [
             'enable',
-            'conf t',
             'pass',
+            'conf t',
             f'interface {interface}',
             f'ip address {ip_address} {mask}',
             'no shutdown',
