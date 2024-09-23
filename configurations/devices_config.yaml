@@ -1,0 +1,23 @@
+devices:
+  vRouter-1:
+    hostname: "192.168.1.1"
+    username: "R1"
+    password: "cisco"
+    ip_addresses:
+#      - interface: GigabitEthernet0/1
+#        address: "192.168.1.1"
+#        mask: "255.255.255.0"
+      - interface: GigabitEthernet0/0
+        address: "10.10.20.1"
+        mask: "255.255.255.0"
+  vRouter-2:
+    hostname: "192.168.1.2"
+    username: "admin"
+    password: "admin"
+    ip_addresses:
+#      - interface: GigabitEthernet0/0
+#        address: "192.168.1.2"
+#        mask: "255.255.255.0"
+      - interface: GigabitEthernet0/1
+        address: "10.10.20.2"
+        mask: "255.255.255.0"

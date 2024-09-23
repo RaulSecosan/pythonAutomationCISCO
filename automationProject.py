@@ -1,25 +1,27 @@
-# Main function to use SSHManager
+from helpers.yaml_loader import load_yaml_config
 from ssh_connection.ssh_connection import SSHManager
+from configurations.ipv4_config import configure_ipv4
 
 
 def main():
-    # Declara un SSH manager pentru conexiune
-    ssh_manager = SSHManager(hostname="192.168.1.1", username="R1", password="cisco")
+    # Încarcă fișierul YAML
+    config = load_yaml_config('configurations/devices_config.yaml')
 
-    # Conexiunea la echipament
-    ssh_manager.connect()
+    devices = config['devices']
 
-    # Trimite comenzi de configurare
-    ssh_manager.send_command("enable\n")
-    ssh_manager.send_command("pass\n")
-    response = ssh_manager.send_command("show ip int brief\n")
+    for device_name, device_info in devices.items():
+        print(f"Configuring {device_name}...")
+        ssh_manager = SSHManager(
+            hostname=device_info['hostname'],
+            username=device_info['username'],
+            password=device_info['password']
+        )
+        ssh_manager.connect()
 
-    # Afisare raspuns
-    print(response)
+        # Configurează IP-urile pe dispozitive
+        configure_ipv4(ssh_manager, device_info['ip_addresses'])
 
-
-    # Închide conexiunea
-    ssh_manager.close()
+        ssh_manager.close()
 
 
 if __name__ == "__main__":
