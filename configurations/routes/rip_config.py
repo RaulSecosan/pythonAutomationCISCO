@@ -2,8 +2,13 @@ def configure_rip_v2(ssh_manager):
     """
     Activează RIP v2 și adaugă rețelele bazate pe rutele existente.
     """
+
+    ssh_manager.send_command('enable')
+    ssh_manager.send_command('pass')
     # Obține rutele curente
     output = ssh_manager.send_command('show ip route')
+    output += ssh_manager.send_command(' ')
+
     print(output)
 
     # Extrage rețelele din `show ip route` (în funcție de ieșirea specifică)
@@ -17,9 +22,6 @@ def configure_rip_v2(ssh_manager):
 
     # Activează RIP v2 și adaugă rețelele
     commands = [
-        '',
-        'enable',
-        'pass',
         'conf t',
         'router rip',
         'version 2',

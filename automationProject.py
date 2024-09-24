@@ -3,6 +3,7 @@ from ssh_connection.ssh_connection import SSHManager
 # from configurations.ipv4_config import configure_ipv4
 # from configurations.routes.static_routes import configure_static_routes
 from configurations.routes.rip_config import configure_rip_v2
+from configurations.hsrp.hsrp_config import HSRPConfig
 
 
 def main():
@@ -11,6 +12,7 @@ def main():
 
     devices = config['devices']
     rip_devices = config.get('rip_devices', [])
+    hsrp_devices = config.get('hsrp_devices', [])
 
     # Parcurge fiecare dispozitiv și aplică configurația
     for device_name, device_info in devices.items():
@@ -33,10 +35,25 @@ def main():
         # # Configurează rutele statice pe dispozitiv, dacă sunt definite
         # if 'static_routes' in device_info:
         #     configure_static_routes(ssh_manager, device_info['static_routes'])
+########
 
-        if device_name in rip_devices:
-            print(f"Configuring RIP on {device_name}...")
-            configure_rip_v2(ssh_manager)
+        # Configurează HSRP pe dispozitivele care au nevoie
+        if device_name in hsrp_devices:
+            print(f"Configuring HSRP on {device_name}...")
+            hsrp_config = device_info['hsrp']
+            hsrp_manager = HSRPConfig(
+                ssh_manager,
+                hsrp_config['interface'],
+                hsrp_config['real_ip'],
+                hsrp_config['standby_ip'],
+                hsrp_config['priority']
+            )
+            hsrp_manager.configure_hsrp()
+
+        # # Configurează RIP pe dispozitivele care au nevoie
+        # if device_name in rip_devices:
+        #     print(f"Configuring RIP on {device_name}...")
+        #     configure_rip_v2(ssh_manager)
 
         # print(ssh_manager.send_command('en\npass\nshow ip int brief\n'))
 
