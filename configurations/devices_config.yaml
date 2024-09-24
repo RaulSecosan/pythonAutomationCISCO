@@ -22,7 +22,7 @@
 #        address: "10.10.20.2"
 #        mask: "255.255.255.0"
 
-
+######
 devices:
   vRouter-1:
     hostname: "192.168.1.1"
@@ -62,4 +62,31 @@ devices:
       - destination: "192.168.1.0"
         mask: "255.255.255.0"
         next_hop: "10.10.20.1"
+
+  RouterLAN:
+    hostname: "30.30.30.2"
+    username: "RouterLAN"
+    password: "cisco"
+
+  R2:
+    hostname: "50.50.50.2"
+    username: "R2"
+    password: "cisco"
+
+  RouterServer:
+    hostname: "60.60.60.2"
+    username: "RouterServer"
+    password: "cisco"
+
+  ISP2:
+    hostname: "40.40.40.1"
+    username: "ISP2"
+    password: "cisco"
+
+rip_devices:
+  - ISP1
+  - RouterLAN
+  - R2
+  - RouterServer
+  - ISP2
 
