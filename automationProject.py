@@ -1,5 +1,7 @@
+from basic_test.ping_test import PingTest
 from configurations.security.portsecurity.portSecurityConfig import PortSecurityConfig
 from configurations.security.shutdown_ports.shutdown_unused_ports import ShutdownUnusedPortsConfig
+from configurations.security.stp_security.portFastBPDU import PortFastBPDUGuardConfig
 from helpers.yaml_loader import load_yaml_config
 from ssh_connection.ssh_connection import SSHManager
 # from configurations.ipv4_config import configure_ipv4
@@ -96,27 +98,50 @@ def main():
         #     rstp_manager.configure_rstp()
 
        # # Configurează Port Security dacă este definit în YAML
-        # if 'port_security' in device_info:
-        #     for port_sec in device_info['port_security']:
-        #         interface = port_sec['interface']
-        #         max_mac = port_sec.get('max_mac', 1)
-        #         violation_action = port_sec.get('violation_action', 'shutdown')
-        #         mac_addresses = port_sec.get('mac_addresses', [])
-        #
-        #         print(f"Configuring Port Security on {interface} for {device_name}...")
-        #         port_security = PortSecurityConfig(
-        #             ssh_manager=ssh_manager,
-        #             interface=interface,
-        #             max_mac=max_mac,
-        #             violation_action=violation_action,
-        #             mac_addresses=mac_addresses
-        #         )
-        #         port_security.configure_port_security()
+       #  if 'port_security' in device_info:
+       #      for port_sec in device_info['port_security']:
+       #          interface = port_sec['interface']
+       #          max_mac = port_sec.get('max_mac', 1)
+       #          violation_action = port_sec.get('violation_action', 'shutdown')
+       #          mac_addresses = port_sec.get('mac_addresses', [])
+       #
+       #          print(f"Configuring Port Security on {interface} for {device_name}...")
+       #          port_security = PortSecurityConfig(
+       #              ssh_manager=ssh_manager,
+       #              interface=interface,
+       #              max_mac=max_mac,
+       #              violation_action=violation_action,
+       #              mac_addresses=mac_addresses
+       #          )
+       #          port_security.configure_port_security()
 
-        if device_info.get('shutdown_unused_ports', False):
-            print(f"Shutting down unused ports on {device_name}...")
-            port_security = ShutdownUnusedPortsConfig(ssh_manager)
-            port_security.shutdown_unused_ports()
+        # #UnusedPorts
+        # if device_info.get('shutdown_unused_ports', False):
+        #     print(f"Shutting down unused ports on {device_name}...")
+        #     port_security = ShutdownUnusedPortsConfig(ssh_manager)
+        #     port_security.shutdown_unused_ports()
+
+        # # Configurează Spanning Tree Security (PortFast și BPDUGuard) dacă sunt specificate în YAML
+        # if 'spanning_tree_security' in device_info:
+        #     spanning_tree_security_info = device_info['spanning_tree_security']
+        #     interfaces = spanning_tree_security_info.get('interfaces', [])
+        #
+        #     # Creează instanța clasei pentru Spanning Tree Security
+        #     if interfaces:
+        #         print(f"Configuring Spanning Tree Security on {device_name}...")
+        #         spanning_tree_security_manager = PortFastBPDUGuardConfig(ssh_manager, interfaces)
+        #         spanning_tree_security_manager.configure_portfast_bpduguard()
+
+        # Verifică dacă trebuie să facă un test ping
+        if 'ping_test' in device_info:
+            print(f"Running Ping Test from {device_name}...")
+            ping_test_info = device_info['ping_test']
+            target_ip = ping_test_info['target_ip']
+
+            # Creează instanța clasei PingTest și rulează testul ping
+            ping_test = PingTest(ssh_manager, target_ip)
+            ping_test.run_ping_test()
+
         ssh_manager.close()
 
 
