@@ -23,7 +23,7 @@ devices:
     shutdown_unused_ports: true
 
     ping_test:
-      target_ip: "192.168.1.5"
+      target_ip: "192.168.1.1"
 
 
   vSwitch-2:
