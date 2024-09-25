@@ -1,3 +1,5 @@
+from configurations.security.portsecurity.portSecurityConfig import PortSecurityConfig
+from configurations.security.shutdown_ports.shutdown_unused_ports import ShutdownUnusedPortsConfig
 from helpers.yaml_loader import load_yaml_config
 from ssh_connection.ssh_connection import SSHManager
 # from configurations.ipv4_config import configure_ipv4
@@ -87,12 +89,34 @@ def main():
         #
         #     dhcp_config.configure_dhcp()
 
-        # Configurează RSTP pe switch-uri
-        if device_info.get('rstp', False): #daca in yaml rstp este setat pe true actioneaza rstp, am pus  ,False pentru ca daca nu exista optiunea de rstp in yaml atunci pune default pe false
-            print(f"Configuring RSTP on {device_name}...")
-            rstp_manager = RSTPConfig(ssh_manager)
-            rstp_manager.configure_rstp()
+        # # Configurează RSTP pe switch-uri
+        # if device_info.get('rstp', False): #daca in yaml rstp este setat pe true actioneaza rstp, am pus  ,False pentru ca daca nu exista optiunea de rstp in yaml atunci pune default pe false
+        #     print(f"Configuring RSTP on {device_name}...")
+        #     rstp_manager = RSTPConfig(ssh_manager)
+        #     rstp_manager.configure_rstp()
 
+       # # Configurează Port Security dacă este definit în YAML
+        # if 'port_security' in device_info:
+        #     for port_sec in device_info['port_security']:
+        #         interface = port_sec['interface']
+        #         max_mac = port_sec.get('max_mac', 1)
+        #         violation_action = port_sec.get('violation_action', 'shutdown')
+        #         mac_addresses = port_sec.get('mac_addresses', [])
+        #
+        #         print(f"Configuring Port Security on {interface} for {device_name}...")
+        #         port_security = PortSecurityConfig(
+        #             ssh_manager=ssh_manager,
+        #             interface=interface,
+        #             max_mac=max_mac,
+        #             violation_action=violation_action,
+        #             mac_addresses=mac_addresses
+        #         )
+        #         port_security.configure_port_security()
+
+        if device_info.get('shutdown_unused_ports', False):
+            print(f"Shutting down unused ports on {device_name}...")
+            port_security = ShutdownUnusedPortsConfig(ssh_manager)
+            port_security.shutdown_unused_ports()
         ssh_manager.close()
 
 

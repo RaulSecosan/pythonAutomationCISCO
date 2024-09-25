@@ -5,7 +5,18 @@ devices:
     password: "cisco"
     vlans: [ 10, 20 ]
     rstp: false
-
+    stp_security:
+      portfast_interfaces: [ "GigabitEthernet0/1" ]
+      bpdu_guard_interfaces: [ "GigabitEthernet0/1" ]
+      shutdown_interfaces: [ "GigabitEthernet0/4", "GigabitEthernet0/5" ]
+    port_security:
+      - interface: "GigabitEthernet0/1"
+        max_mac: 40
+        violation_action: "shutdown"
+#        mac_addresses:
+#          - "0011.2233.4455"
+#          - "0011.2233.5566"
+    shutdown_unused_ports: true
 
   vSwitch-2:
     hostname: "192.168.1.6"
@@ -56,6 +67,7 @@ devices:
       default_router: "192.168.1.1"
       dns_server:
         - "8.8.8.8"
+    shutdown_unused_ports: true
 
   vRouter-2:
     hostname: "192.168.1.2"
