@@ -28,16 +28,15 @@ devices:
       real_ip: "10.10.20.1"
       standby_ip: "10.10.20.254"
       priority: 110
-
     dhcp:
       excluded_addresses:
-        - "192.168.1.1"
-        - "192.168.1.10"
-      pool_name: "POOL2"
+        - "192.168.1.1-192.168.1.9"
+        - "192.168.1.254"
+      pool_name: "poolCustomerOffice"
       network: "192.168.1.0"
-      subnet_mask: "255.255.255.0"
-      gateway: "192.168.1.1"
-      dns_servers:
+      mask: "255.255.255.0"
+      default_router: "192.168.1.1"
+      dns_server:
         - "8.8.8.8"
 
   vRouter-2:
@@ -102,6 +101,16 @@ devices:
       real_ip: "20.20.20.3"
       standby_ip: "20.20.20.254"
       priority: 110
+    dhcp:
+      excluded_addresses:
+        - "172.16.1.1-172.16.1.8"
+        - "172.16.1.254"
+      pool_name: "poolDataCenter"
+      network: "172.16.1.0"
+      mask: "255.255.255.0"
+      default_router: "172.16.1.3"
+      dns_server:
+        - "8.8.8.8"
 
   vRouter-9:
     hostname: "20.20.20.4"

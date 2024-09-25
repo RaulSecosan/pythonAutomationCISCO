@@ -37,19 +37,19 @@ def main():
         #     configure_static_routes(ssh_manager, device_info['static_routes'])
 ########
 
-        # Configurează HSRP pe dispozitivele care au nevoie
-        if device_name in hsrp_devices:
-            print(f"Configuring HSRP on {device_name}...")
-            hsrp_config = device_info['hsrp']
-            hsrp_manager = HSRPConfig(
-                ssh_manager,
-                hsrp_config['interface'],
-                hsrp_config['group'],
-                hsrp_config['real_ip'],
-                hsrp_config['standby_ip'],
-                hsrp_config['priority']
-            )
-            hsrp_manager.configure_hsrp()
+        # # Configurează HSRP pe dispozitivele care au nevoie
+        # if device_name in hsrp_devices:
+        #     print(f"Configuring HSRP on {device_name}...")
+        #     hsrp_config = device_info['hsrp']
+        #     hsrp_manager = HSRPConfig(
+        #         ssh_manager,
+        #         hsrp_config['interface'],
+        #         hsrp_config['group'],
+        #         hsrp_config['real_ip'],
+        #         hsrp_config['standby_ip'],
+        #         hsrp_config['priority']
+        #     )
+        #     hsrp_manager.configure_hsrp()
 
         # # Configurează RIP pe dispozitivele care au nevoie
         # if device_name in rip_devices:
@@ -61,10 +61,29 @@ def main():
         #     switch = Switch(ssh_manager, device_info['vlans'])
         #     switch.configure_vlans()
 
-        # if 'dhcp' in device_info:
-        #     print(f"Configuring DHCP on {device_name}...")
-        #     dhcp_config = DHCPConfig(ssh_manager, device_info['dhcp'])
-        #     dhcp_config.configure_dhcp()
+        if 'dhcp' in device_info:
+            print(f"Configuring DHCP on {device_name}...")
+            dhcp_info = device_info['dhcp']
+
+            pool_name = dhcp_info['pool_name']
+            network = dhcp_info['network']
+            mask = dhcp_info['mask']
+            default_router = dhcp_info['default_router']
+            dns_server = dhcp_info['dns_server']
+            excluded_addresses = dhcp_info['excluded_addresses']
+
+            # Creează instanța clasei DHCPConfig cu parametrii extrași
+            dhcp_config = DHCPConfig(
+                ssh_manager=ssh_manager,
+                pool_name=pool_name,
+                network=network,
+                mask=mask,
+                default_router=default_router,
+                dns_server=dns_server,
+                excluded_addresses=excluded_addresses
+            )
+
+            dhcp_config.configure_dhcp()
 
         ssh_manager.close()
 
