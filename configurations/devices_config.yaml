@@ -28,6 +28,17 @@ devices:
       standby_ip: "10.10.20.254"
       priority: 110
 
+    dhcp:
+      excluded_addresses:
+        - "192.168.1.1"
+        - "192.168.1.10"
+      pool_name: "POOL2"
+      network: "192.168.1.0"
+      subnet_mask: "255.255.255.0"
+      gateway: "192.168.1.1"
+      dns_servers:
+        - "8.8.8.8"
+
   vRouter-2:
     hostname: "192.168.1.2"
     username: "R2"

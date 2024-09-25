@@ -1,3 +1,6 @@
+from time import sleep
+
+
 def configure_rip_v2(ssh_manager):
     """
     Activează RIP v2 și adaugă rețelele bazate pe rutele existente.
@@ -5,20 +8,25 @@ def configure_rip_v2(ssh_manager):
 
     ssh_manager.send_command('enable')
     ssh_manager.send_command('pass')
+    ssh_manager.send_command('terminal length 0')  #pentru a afisa toate rutele fara sa apara 'next'
     # Obține rutele curente
     output = ssh_manager.send_command('show ip route')
-    output += ssh_manager.send_command(' ')
+    sleep(1)
 
     print(output)
 
     # Extrage rețelele din `show ip route` (în funcție de ieșirea specifică)
     networks = []
-    for line in output.splitlines():
-        # if "C " in line or "L " in line:  # C = connected, L = local
-        if "C "  in line:
+    lines = output.splitlines()
+    for line in lines:
+        print(line)
+
+        if "C " in line:
             parts = line.split()
             network = parts[1].split('/')[0]
             networks.append(network)
+            print(f'This is my {network}')
+
 
     # Activează RIP v2 și adaugă rețelele
     commands = [

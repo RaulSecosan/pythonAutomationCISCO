@@ -4,7 +4,7 @@ from ssh_connection.ssh_connection import SSHManager
 # from configurations.routes.static_routes import configure_static_routes
 from configurations.routes.rip_config import configure_rip_v2
 from configurations.vlans.vlan_config import Switch
-
+from configurations.dhcp.dhcp_config import DHCPConfig
 def main():
     # Încarcă fișierul YAML
     config = load_yaml_config('configurations/devices_config.yaml')
@@ -49,15 +49,20 @@ def main():
         #     )
         #     hsrp_manager.configure_hsrp()
 
-        # # Configurează RIP pe dispozitivele care au nevoie
-        # if device_name in rip_devices:
-        #     print(f"Configuring RIP on {device_name}...")
-        #     configure_rip_v2(ssh_manager)
+        # Configurează RIP pe dispozitivele care au nevoie
+        if device_name in rip_devices:
+            print(f"Configuring RIP on {device_name}...")
+            configure_rip_v2(ssh_manager)
 
-        # Creează VLAN-urile pe switch
-        if 'vlans' in device_info:
-            switch = Switch(ssh_manager, device_info['vlans'])
-            switch.configure_vlans()
+        # # Creează VLAN-urile pe switch
+        # if 'vlans' in device_info:
+        #     switch = Switch(ssh_manager, device_info['vlans'])
+        #     switch.configure_vlans()
+
+        # if 'dhcp' in device_info:
+        #     print(f"Configuring DHCP on {device_name}...")
+        #     dhcp_config = DHCPConfig(ssh_manager, device_info['dhcp'])
+        #     dhcp_config.configure_dhcp()
 
         ssh_manager.close()
 
