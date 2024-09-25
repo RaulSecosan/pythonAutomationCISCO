@@ -24,6 +24,7 @@ devices:
         next_hop: "10.10.20.4"
     hsrp:
       interface: "GigabitEthernet0/0"
+      group: "1"
       real_ip: "10.10.20.1"
       standby_ip: "10.10.20.254"
       priority: 110
@@ -53,6 +54,7 @@ devices:
         next_hop: "10.10.20.4"
     hsrp:
       interface: "GigabitEthernet0/1"
+      group: "1"
       real_ip: "10.10.20.2"
       standby_ip: "10.10.20.254"
       priority: 100
