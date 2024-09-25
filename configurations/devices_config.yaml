@@ -141,6 +141,31 @@ devices:
       standby_ip: "20.20.20.254"
       priority: 100
 
+  SW7:
+    hostname: "172.16.1.2"
+    username: "SW7"
+    password: "cisco"
+    rstp: true
+
+
+  SW9:
+    hostname: "172.16.1.6"
+    username: "SW9"
+    password: "cisco"
+    rstp: true
+
+  SW8:
+    hostname: "172.16.1.3"
+    username: "SW8"
+    password: "cisco"
+    rstp: true
+
+  SW10:
+    hostname: "172.16.1.4"
+    username: "SW10"
+    password: "cisco"
+    rstp: true
+
 rip_devices:
   - ISP1
   - RouterLAN
