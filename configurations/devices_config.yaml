@@ -4,11 +4,29 @@ devices:
     username: "SW1"
     password: "cisco"
     vlans: [ 10, 20 ]
+    rstp: false
+
+
   vSwitch-2:
     hostname: "192.168.1.6"
     username: "SW2"
     password: "cisco"
     vlans: [ 10, 20 ]
+    rstp: true
+
+  vSwitch-3:
+    hostname: "192.168.1.7"
+    username: "SW3"
+    password: "cisco"
+    vlans: [ 10, 20 ]
+    rstp: true
+
+  vSwitch-4:
+    hostname: "192.168.1.8"
+    username: "SW4"
+    password: "cisco"
+    vlans: [ 10, 20 ]
+    rstp: false
 
   vRouter-1:
     hostname: "192.168.1.1"

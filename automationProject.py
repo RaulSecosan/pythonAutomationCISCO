@@ -6,6 +6,7 @@ from configurations.routes.rip_config import configure_rip_v2
 from configurations.vlans.vlan_config import Switch
 from configurations.hsrp.hsrp_config import HSRPConfig
 from configurations.dhcp.dhcp_config import DHCPConfig
+from configurations.rstp.rstp_config import RSTPConfig
 def main():
     # Încarcă fișierul YAML
     config = load_yaml_config('configurations/devices_config.yaml')
@@ -61,29 +62,36 @@ def main():
         #     switch = Switch(ssh_manager, device_info['vlans'])
         #     switch.configure_vlans()
 
-        if 'dhcp' in device_info:
-            print(f"Configuring DHCP on {device_name}...")
-            dhcp_info = device_info['dhcp']
+        # # Implementeaza DHCP
+        # if 'dhcp' in device_info:
+        #     print(f"Configuring DHCP on {device_name}...")
+        #     dhcp_info = device_info['dhcp']
+        #
+        #     pool_name = dhcp_info['pool_name']
+        #     network = dhcp_info['network']
+        #     mask = dhcp_info['mask']
+        #     default_router = dhcp_info['default_router']
+        #     dns_server = dhcp_info['dns_server']
+        #     excluded_addresses = dhcp_info['excluded_addresses']
+        #
+        #     # Creează instanța clasei DHCPConfig cu parametrii extrași
+        #     dhcp_config = DHCPConfig(
+        #         ssh_manager=ssh_manager,
+        #         pool_name=pool_name,
+        #         network=network,
+        #         mask=mask,
+        #         default_router=default_router,
+        #         dns_server=dns_server,
+        #         excluded_addresses=excluded_addresses
+        #     )
+        #
+        #     dhcp_config.configure_dhcp()
 
-            pool_name = dhcp_info['pool_name']
-            network = dhcp_info['network']
-            mask = dhcp_info['mask']
-            default_router = dhcp_info['default_router']
-            dns_server = dhcp_info['dns_server']
-            excluded_addresses = dhcp_info['excluded_addresses']
-
-            # Creează instanța clasei DHCPConfig cu parametrii extrași
-            dhcp_config = DHCPConfig(
-                ssh_manager=ssh_manager,
-                pool_name=pool_name,
-                network=network,
-                mask=mask,
-                default_router=default_router,
-                dns_server=dns_server,
-                excluded_addresses=excluded_addresses
-            )
-
-            dhcp_config.configure_dhcp()
+        # Configurează RSTP pe switch-uri
+        if device_info.get('rstp', False): #daca in yaml rstp este setat pe true actioneaza rstp, am pus  ,False pentru ca daca nu exista optiunea de rstp in yaml atunci pune default pe false
+            print(f"Configuring RSTP on {device_name}...")
+            rstp_manager = RSTPConfig(ssh_manager)
+            rstp_manager.configure_rstp()
 
         ssh_manager.close()
 
