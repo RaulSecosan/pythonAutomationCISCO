@@ -3,8 +3,7 @@ from ssh_connection.ssh_connection import SSHManager
 # from configurations.ipv4_config import configure_ipv4
 # from configurations.routes.static_routes import configure_static_routes
 from configurations.routes.rip_config import configure_rip_v2
-from configurations.hsrp.hsrp_config import HSRPConfig
-
+from configurations.vlans.vlan_config import Switch
 
 def main():
     # Încarcă fișierul YAML
@@ -37,25 +36,28 @@ def main():
         #     configure_static_routes(ssh_manager, device_info['static_routes'])
 ########
 
-        # Configurează HSRP pe dispozitivele care au nevoie
-        if device_name in hsrp_devices:
-            print(f"Configuring HSRP on {device_name}...")
-            hsrp_config = device_info['hsrp']
-            hsrp_manager = HSRPConfig(
-                ssh_manager,
-                hsrp_config['interface'],
-                hsrp_config['real_ip'],
-                hsrp_config['standby_ip'],
-                hsrp_config['priority']
-            )
-            hsrp_manager.configure_hsrp()
+        # # Configurează HSRP pe dispozitivele care au nevoie
+        # if device_name in hsrp_devices:
+        #     print(f"Configuring HSRP on {device_name}...")
+        #     hsrp_config = device_info['hsrp']
+        #     hsrp_manager = HSRPConfig(
+        #         ssh_manager,
+        #         hsrp_config['interface'],
+        #         hsrp_config['real_ip'],
+        #         hsrp_config['standby_ip'],
+        #         hsrp_config['priority']
+        #     )
+        #     hsrp_manager.configure_hsrp()
 
         # # Configurează RIP pe dispozitivele care au nevoie
         # if device_name in rip_devices:
         #     print(f"Configuring RIP on {device_name}...")
         #     configure_rip_v2(ssh_manager)
 
-        # print(ssh_manager.send_command('en\npass\nshow ip int brief\n'))
+        # Creează VLAN-urile pe switch
+        if 'vlans' in device_info:
+            switch = Switch(ssh_manager, device_info['vlans'])
+            switch.configure_vlans()
 
         ssh_manager.close()
 

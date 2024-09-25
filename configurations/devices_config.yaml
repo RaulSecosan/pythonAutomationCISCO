@@ -1,4 +1,15 @@
 devices:
+  vSwitch-1:
+    hostname: "192.168.1.5"
+    username: "SW1"
+    password: "cisco"
+    vlans: [ 10, 20 ]
+  vSwitch-2:
+    hostname: "192.168.1.6"
+    username: "SW2"
+    password: "cisco"
+    vlans: [ 10, 20 ]
+
   vRouter-1:
     hostname: "192.168.1.1"
     username: "R1"
